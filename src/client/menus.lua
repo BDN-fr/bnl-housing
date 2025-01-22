@@ -39,8 +39,6 @@ function Menus.entrance(property)
         })
     end
 
-    --[[
-    -- Renting is disabled for initial release.
     if property.isForRent then
         table.insert(main.options, {
             label = locale("menu.entrance.rent", property.rentData.price),
@@ -58,7 +56,6 @@ function Menus.entrance(property)
             end
         })
     end
-    ]]
 
     if not key or not key.permission or key.permission == PERMISSION.VISITOR then
         table.insert(main.options, {
@@ -143,8 +140,8 @@ function Menus.property(property)
                 property:startSale()
             end
         },
-        -- Renting is disabled for intital release.
-        --[[
+
+
         {
             label = locale("menu.property.rent_out"),
             permissions = { PERMISSION.OWNER },
@@ -157,7 +154,6 @@ function Menus.property(property)
             permissions = { PERMISSION.RENTER },
             onSelect = lib.print.error
         }
-        ]]
     }
 
     main.options = table.map(options, function(option)

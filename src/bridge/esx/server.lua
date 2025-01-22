@@ -71,17 +71,18 @@ end
 ---@return number | nil
 function Bridge.GetMoney(player)
     if type(player) == "number" then
-        return ESX.GetPlayerFromId(player)?.getAccount("bank").money
+        return exports['s1n_lib']:getPlayerBankMoney(Bridge.GetPlayerIdentifier(player))
     end
 
     if type(player) == "string" then
-        local queryResult = MySQL.single.await("SELECT accounts FROM users WHERE identifier = ?", {
-            player
-        })
-        if not queryResult then return end
+        -- local queryResult = MySQL.single.await("SELECT accounts FROM users WHERE identifier = ?", {
+        --     player
+        -- })
+        -- if not queryResult then return end
 
-        local accounts = json.decode(queryResult.accounts)
-        return accounts.bank
+        -- local accounts = json.decode(queryResult.accounts)
+        -- return accounts.bank
+        return exports['s1n_lib']:getPlayerBankMoney(player)
     end
 end
 
@@ -90,16 +91,17 @@ end
 ---@param amount number
 function Bridge.RemoveMoney(player, amount)
     if type(player) == "number" then
-        return ESX.GetPlayerFromId(player).removeAccountMoney("bank", amount)
+        return exports['s1n_lib']:removeMoneyFromBankAccount(Bridge.GetPlayerIdentifier(player), amount)
     end
 
     if type(player) == "string" then
-        local query = [[
-            UPDATE users
-            SET accounts = JSON_SET(accounts, '$.bank', JSON_UNQUOTE(JSON_EXTRACT(accounts, '$.bank')) - ?)
-            WHERE identifier = ?;
-        ]]
-        MySQL.query.await(query, { amount, player })
+        -- local query = [[
+        --     UPDATE users
+        --     SET accounts = JSON_SET(accounts, '$.bank', JSON_UNQUOTE(JSON_EXTRACT(accounts, '$.bank')) - ?)
+        --     WHERE identifier = ?;
+        -- ]]
+        -- MySQL.query.await(query, { amount, player })
+        return exports['s1n_lib']:removeMoneyFromBankAccount(player, amount)
     end
 end
 
@@ -108,15 +110,16 @@ end
 ---@param amount number
 function Bridge.AddMoney(player, amount)
     if type(player) == "number" then
-        return ESX.GetPlayerFromId(player).addAccountMoney("bank", amount)
+        return exports['s1n_lib']:addMoneyToBankAccount(Bridge.GetPlayerIdentifier(player), amount)
     end
 
     if type(player) == "string" then
-        local query = [[
-            UPDATE users
-            SET accounts = JSON_SET(accounts, '$.bank', JSON_UNQUOTE(JSON_EXTRACT(accounts, '$.bank')) + ?)
-            WHERE identifier = ?;
-        ]]
-        MySQL.query.await(query, { amount, player })
+        -- local query = [[
+        --     UPDATE users
+        --     SET accounts = JSON_SET(accounts, '$.bank', JSON_UNQUOTE(JSON_EXTRACT(accounts, '$.bank')) + ?)
+        --     WHERE identifier = ?;
+        -- ]]
+        -- MySQL.query.await(query, { amount, player })
+        exports['s1n_lib']:addMoneyToBankAccount(player, amount)
     end
 end

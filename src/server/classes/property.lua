@@ -764,8 +764,7 @@ end
 
 ---@return boolean
 function Property:isForRent()
-    return false -- Renting is disabled for initial release.
-    -- return self.rentData and self.rentData.status == COMPLETION_STATUS.UNCOMPLETED or false
+    return self.rentData and self.rentData.status == COMPLETION_STATUS.UNCOMPLETED or false
 end
 
 ---@param source number

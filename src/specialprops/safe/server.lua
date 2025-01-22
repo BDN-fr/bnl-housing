@@ -1,74 +1,74 @@
-local allowedOpens = {}
+-- local allowedOpens = {}
 
-exports.ox_inventory:registerHook('openInventory', function(payload)
-    local data = allowedOpens[tostring(payload.source)]
-    local offset = GetGameTimer() - data.time
+-- exports.ox_inventory:registerHook('openInventory', function(payload)
+--     local data = allowedOpens[tostring(payload.source)]
+--     local offset = GetGameTimer() - data.time
 
-    if offset > 1000 then
-        return false -- Took too long for the client to try and open the safe
-    end
+--     if offset > 1000 then
+--         return false -- Took too long for the client to try and open the safe
+--     end
 
-    if payload.inventoryId ~= data.stashId then
-        return false -- Didn't open the correct stash
-    end
+--     if payload.inventoryId ~= data.stashId then
+--         return false -- Didn't open the correct stash
+--     end
 
-    allowedOpens[tostring(payload.source)] = nil
+--     allowedOpens[tostring(payload.source)] = nil
 
-    return true
-end, {
-    print = true,
-    inventoryFilter = {
-        '^property.safe.[%w]+',
-    }
-})
+--     return true
+-- end, {
+--     print = true,
+--     inventoryFilter = {
+--         '^property.safe.[%w]+',
+--     }
+-- })
 
-RegisterNetEvent("bnl-housing:specialprops:safe:open", function(enteredCode, propertyId, propId)
-    local player = source
-    local prop = exports["bnl-housing"]:getPropertyProp(propertyId, propId)
-    if not prop then return end
+-- RegisterNetEvent("bnl-housing:specialprops:safe:open", function(enteredCode, propertyId, propId)
+--     local player = source
+--     local prop = exports["bnl-housing"]:getPropertyProp(propertyId, propId)
+--     if not prop then return end
 
-    local currentCode = prop.metadata.getPrivate("code")
+--     local currentCode = prop.metadata.getPrivate("code")
 
-    if not currentCode then
-        prop.metadata.setPrivate("code", enteredCode:sub(1, 4))
-        currentCode = enteredCode
-    end
+--     if not currentCode then
+--         prop.metadata.setPrivate("code", enteredCode:sub(1, 4))
+--         currentCode = enteredCode
+--     end
 
-    if currentCode ~= enteredCode then
-        ClientFunctions.Notification(player, locale("specialprops.safe.invalid_code"), "error")
-        return
-    end
+--     if currentCode ~= enteredCode then
+--         ClientFunctions.Notification(player, locale("specialprops.safe.invalid_code"), "error")
+--         return
+--     end
 
-    local stashId = "property.safe." .. propId
+--     local stashId = "property.safe." .. propId
 
-    allowedOpens[tostring(player)] = {
-        time = GetGameTimer(),
-        stashId = stashId
-    }
+--     allowedOpens[tostring(player)] = {
+--         time = GetGameTimer(),
+--         stashId = stashId
+--     }
 
-    exports.ox_inventory:RegisterStash(stashId, locale("specialprops.safe"), 25, 1000 * 1000)
-    exports.ox_inventory:forceOpenInventory(player, 'stash', stashId)
-end)
+--     exports.ox_inventory:RegisterStash(stashId, locale("specialprops.safe"), 25, 1000 * 1000)
+--     exports.ox_inventory:forceOpenInventory(player, 'stash', stashId)
+-- end)
 
-RegisterNetEvent("bnl-housing:specialprops:safe:changeCode", function(oldCode, _newCode, propertyId, propId)
-    local player = source
-    local prop = exports["bnl-housing"]:getPropertyProp(propertyId, propId)
-    if not prop then return end
+-- RegisterNetEvent("bnl-housing:specialprops:safe:changeCode", function(oldCode, _newCode, propertyId, propId)
+--     local player = source
+--     local prop = exports["bnl-housing"]:getPropertyProp(propertyId, propId)
+--     if not prop then return end
 
-    local newCode = _newCode:sub(1, 4)
-    local currentCode = prop.metadata.getPrivate("code")
+--     local newCode = _newCode:sub(1, 4)
+--     local currentCode = prop.metadata.getPrivate("code")
 
-    if not currentCode then
-        prop.metadata.setPrivate("code", newCode)
-        ClientFunctions.Notification(player, locale("specialprops.safe.updated_code", newCode), "success")
-        return
-    end
+--     if not currentCode then
+--         prop.metadata.setPrivate("code", newCode)
+--         ClientFunctions.Notification(player, locale("specialprops.safe.updated_code", newCode), "success")
+--         return
+--     end
 
-    if currentCode ~= oldCode then
-        ClientFunctions.Notification(player, locale("specialprops.safe.invalid_code"), "error")
-        return
-    end
+--     if currentCode ~= oldCode then
+--         ClientFunctions.Notification(player, locale("specialprops.safe.invalid_code"), "error")
+--         return
+--     end
 
-    ClientFunctions.Notification(player, locale("specialprops.safe.updated_code", newCode), "success")
-    prop.metadata.setPrivate("code", newCode)
-end)
+--     ClientFunctions.Notification(player, locale("specialprops.safe.updated_code", newCode), "success")
+--     prop.metadata.setPrivate("code", newCode)
+-- end)

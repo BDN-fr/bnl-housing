@@ -53,5 +53,5 @@ shared_scripts {
     'config.lua',
     'src/bridge/shared.lua',
     'src/shared/*.lua',
-    'src/specialprops/**/shared.lua',
+    -- 'src/specialprops/**/shared.lua',
 }
