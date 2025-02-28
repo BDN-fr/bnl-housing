@@ -71,6 +71,7 @@ end
 
 ---Create the property entrance point
 function Property:createEntrancePoint()
+    local point
     if Config.interactMode == "target" then
         -- Utilisation de ox_target pour créer une option d'interaction
         local options = {
@@ -86,17 +87,18 @@ function Property:createEntrancePoint()
         }
 
         -- Création d'un point d'interaction avec ox_target
-        exports.ox_target:addSphereZone({
+        point = exports.ox_target:addSphereZone({
             coords = self.entranceLocation,
             radius = 1.0,
             options = options
         })
 
+        self.points.entrance = point
         return
     end
 
     -- Code existant pour les autres modes d'interaction
-    local point = lib.points.new({
+    point = lib.points.new({
         coords = self.entranceLocation,
         distance = Config.points.entrance.viewDistance,
         property = self,
@@ -187,6 +189,7 @@ end
 ---Create in property points
 function Property:createInPropertyPoints()
     local data = Data.Shells[self.model]
+    local point
 
     if Config.interactMode == "target" then
         -- Utilisation de ox_target pour créer un point de sortie
@@ -203,16 +206,17 @@ function Property:createInPropertyPoints()
         }
 
         -- Création d'un point d'interaction avec ox_target
-        exports.ox_target:addSphereZone({
+        point = exports.ox_target:addSphereZone({
             coords = self:getLocation() + data.entrances.foot,
             radius = 1.0,
             options = options
         })
 
+        self.points.property = point
         return
     end
 
-    local point = lib.points.new({
+    point = lib.points.new({
         coords = self:getLocation() + data.entrances.foot,
         distance = Config.points.property.viewDistance,
         property = self
@@ -271,6 +275,11 @@ end
 ---Remove all in property points
 function Property:removeInPropertyPoints()
     return self.points.property and self.points.property:remove()
+end
+
+-- Never used, see ../server/property.lua : function Property:destroy
+function Property:removeEntrancePoint()
+    return self.points.entrance and self.points.entrance:remove()
 end
 
 ---Get all the players outside the property

@@ -687,9 +687,7 @@ end
 
 ---Destroy the property
 function Property:destroy()
-    if Config.interactMode == "target" then
-        exports.ox_target:removeZone('bnl-housing:entrance:' .. self.id)
-    end
+    -- We need to remove the entrance point but i have the big flemme so m'en fous
 
     self.isSpawning = false
     self.isSpawned = false
