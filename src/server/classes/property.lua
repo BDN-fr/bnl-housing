@@ -687,6 +687,10 @@ end
 
 ---Destroy the property
 function Property:destroy()
+    if Config.interactMode == "target" then
+        exports.ox_target:removeZone('bnl-housing:entrance:' .. self.id)
+    end
+
     self.isSpawning = false
     self.isSpawned = false
     self.isSpawningVehicles = false

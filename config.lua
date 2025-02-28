@@ -11,8 +11,8 @@ FRAMEWORKS = {
 Config.framework = FRAMEWORKS.auto
 
 ---The way for the menu to show up
----@type "walk" | "keypress"
-Config.interactMode = "keypress"
+---@type "walk" | "keypress" | "target"
+Config.interactMode = "target"
 ---The way players get listed in menus
 ---@type "name" | "id" | "both"
 Config.playerTag = "both"

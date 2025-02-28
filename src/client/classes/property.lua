@@ -71,6 +71,31 @@ end
 
 ---Create the property entrance point
 function Property:createEntrancePoint()
+    if Config.interactMode == "target" then
+        -- Utilisation de ox_target pour créer une option d'interaction
+        local options = {
+            {
+                name = 'bnl-housing:entrance:' .. self.id,
+                icon = 'fas fa-home',
+                label = locale("notification.property.menu", ""),
+                distance = Config.points.entrance.viewDistance,
+                onSelect = function()
+                    Menus.entrance(self)
+                end
+            }
+        }
+
+        -- Création d'un point d'interaction avec ox_target
+        exports.ox_target:addSphereZone({
+            coords = self.entranceLocation,
+            radius = 1.0,
+            options = options
+        })
+
+        return
+    end
+
+    -- Code existant pour les autres modes d'interaction
     local point = lib.points.new({
         coords = self.entranceLocation,
         distance = Config.points.entrance.viewDistance,
@@ -162,6 +187,30 @@ end
 ---Create in property points
 function Property:createInPropertyPoints()
     local data = Data.Shells[self.model]
+
+    if Config.interactMode == "target" then
+        -- Utilisation de ox_target pour créer un point de sortie
+        local options = {
+            {
+                name = 'bnl-housing:exit:' .. self.id,
+                icon = 'fas fa-door-open',
+                label = locale("notification.property.menu", ""),
+                distance = Config.points.property.viewDistance,
+                onSelect = function()
+                    Menus.property(self)
+                end
+            }
+        }
+
+        -- Création d'un point d'interaction avec ox_target
+        exports.ox_target:addSphereZone({
+            coords = self:getLocation() + data.entrances.foot,
+            radius = 1.0,
+            options = options
+        })
+
+        return
+    end
 
     local point = lib.points.new({
         coords = self:getLocation() + data.entrances.foot,
