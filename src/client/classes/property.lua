@@ -208,7 +208,7 @@ function Property:createInPropertyPoints()
         -- Création d'un point d'interaction avec ox_target
         point = exports.ox_target:addSphereZone({
             coords = self:getLocation() + data.entrances.foot,
-            radius = 1.0,
+            radius = 2.0,
             options = options
         })
 
