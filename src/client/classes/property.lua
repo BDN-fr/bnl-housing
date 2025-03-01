@@ -274,6 +274,9 @@ end
 
 ---Remove all in property points
 function Property:removeInPropertyPoints()
+    if Config.interactMode == 'target' then
+        return self.points.property and exports.ox_target:removeZone(self.points.property)
+    end
     return self.points.property and self.points.property:remove()
 end
 
