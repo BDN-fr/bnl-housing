@@ -19,7 +19,16 @@
 		"checkJs": true,
 		"isolatedModules": true
 	},
-	"include": ["src/**/*"],
-	"exclude": ["node_modules/*", "public/*"],
-	"references": [{ "path": "./tsconfig.node.json" }]
+	"include": [
+		"src/**/*"
+	],
+	"exclude": [
+		"node_modules/*",
+		"public/*"
+	],
+	"references": [
+		{
+			"path": "./tsconfig.node.json"
+		}
+	]
 }
