@@ -17,3 +17,7 @@ Data = {
     Shells = LoadData("shells"),
     Props = LoadData("props"),
 }
+
+exports('GetProps', function()
+    return Data.Props
+end)
